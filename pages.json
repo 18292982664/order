@@ -1,0 +1,50 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "菜品"
+			}
+		},
+		{
+			"path": "pages/order/order",
+			"style": {
+				"navigationBarTitleText": "订单"
+			}
+		},
+		{
+			"path": "pages/car/car",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#FFFFFF",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#282B32",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/tabBar/dishes.png",
+			"selectedIconPath": "static/tabBar/dishes-hover.png",
+			"text": "菜品"
+		}, {
+			"pagePath": "pages/order/order",
+			"iconPath": "static/tabBar/order.png",
+			"selectedIconPath": "static/tabBar/order-hover.png",
+			"text": "订单"
+		}, {
+			"pagePath": "pages/car/car",
+			"iconPath": "static/tabBar/car.png",
+			"selectedIconPath": "static/tabBar/car-hover.png",
+			"text": "购物车"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "蒙古大战",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
