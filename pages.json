@@ -1,4 +1,7 @@
 {
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
@@ -17,7 +20,20 @@
 			"style": {
 				"navigationBarTitleText": "购物车"
 			}
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
 		}
+		
 	],
 	"tabBar": {
 		"color": "#FFFFFF",
@@ -39,6 +55,16 @@
 			"iconPath": "static/tabBar/car.png",
 			"selectedIconPath": "static/tabBar/car-hover.png",
 			"text": "购物车"
+		}, {
+			"pagePath": "pages/my/my",
+			"iconPath": "static/tabBar/mine.png",
+			"selectedIconPath": "static/tabBar/mine-hover.png",
+			"text": "我的"
+		}, {
+			"pagePath": "pages/login/login",
+			"iconPath": "static/tabBar/mine.png",
+			"selectedIconPath": "static/tabBar/mine-hover.png",
+			"text": "登录"
 		}]
 	},
 	"globalStyle": {

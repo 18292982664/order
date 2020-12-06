@@ -1,0 +1,30 @@
+{
+	"easycom": {
+			"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		},
+	"name": "order",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/18292982664/order.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/18292982664/order/issues"
+	},
+	"homepage": "https://github.com/18292982664/order#readme",
+	"dependencies": {
+		"uview-ui": "^1.8.2"
+	},
+	"devDependencies": {
+		"node-sass": "^5.0.0",
+		"sass-loader": "^10.1.0"
+	}
+}
