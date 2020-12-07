@@ -1,4 +1,4 @@
-import uniRequest from 'uni-request'
+// import uniRequest from 'uni-request'
 
 if (process.env.NODE_ENV === 'development') {
 	// 开发环境
@@ -29,15 +29,20 @@ const request = (url = '', method = 'GET', data = {}) => {
 			header: header
 		}).then((response) => {
 			let [error, res] = response;
+			console.log(2, res)
 			// 登录过期
-			if (res.code == 401) {
-				uni.showToast({
-					title: '登录过期,请重新登录',
-					duration: 2000
-				});
-			};
-			resolve(res.data);
+			switch (res.statusCode) {
+				case 401:
+					uni.redirectTo({
+						url: '/pages/login/login'
+					});
+			}
+			if (res.statusCode == 200) {
+				resolve(res.data);
+			}
+
 		}).catch((error) => {
+			console.log(1, error)
 			let [err, res] = error;
 			reject(err);
 		});

@@ -15,6 +15,7 @@ let showToast = (title) => {
 		duration: 2000
 	})
 };
+
 Vue.prototype.$axios = axios;
 Vue.prototype.$showToast = showToast;
 const app = new Vue({
