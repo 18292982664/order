@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-
+import store from "./store/index.js"
 Vue.config.productionTip = false
 
 App.mpType = 'app'
@@ -18,6 +18,7 @@ let showToast = (title) => {
 Vue.prototype.$axios = axios;
 Vue.prototype.$showToast = showToast;
 const app = new Vue({
-	...App
+	...App,
+	store
 })
 app.$mount()

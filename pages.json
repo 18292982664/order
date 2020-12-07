@@ -33,7 +33,7 @@
 				"navigationBarTitleText": "登录"
 			}
 		}
-		
+
 	],
 	"tabBar": {
 		"color": "#FFFFFF",
@@ -41,31 +41,33 @@
 		"borderStyle": "black",
 		"backgroundColor": "#282B32",
 		"list": [{
-			"pagePath": "pages/index/index",
-			"iconPath": "static/tabBar/dishes.png",
-			"selectedIconPath": "static/tabBar/dishes-hover.png",
-			"text": "菜品"
-		}, {
-			"pagePath": "pages/order/order",
-			"iconPath": "static/tabBar/order.png",
-			"selectedIconPath": "static/tabBar/order-hover.png",
-			"text": "订单"
-		}, {
-			"pagePath": "pages/car/car",
-			"iconPath": "static/tabBar/car.png",
-			"selectedIconPath": "static/tabBar/car-hover.png",
-			"text": "购物车"
-		}, {
-			"pagePath": "pages/my/my",
-			"iconPath": "static/tabBar/mine.png",
-			"selectedIconPath": "static/tabBar/mine-hover.png",
-			"text": "我的"
-		}, {
-			"pagePath": "pages/login/login",
-			"iconPath": "static/tabBar/mine.png",
-			"selectedIconPath": "static/tabBar/mine-hover.png",
-			"text": "登录"
-		}]
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabBar/dishes.png",
+				"selectedIconPath": "static/tabBar/dishes-hover.png",
+				"text": "菜品"
+			}, {
+				"pagePath": "pages/order/order",
+				"iconPath": "static/tabBar/order.png",
+				"selectedIconPath": "static/tabBar/order-hover.png",
+				"text": "订单"
+			}, {
+				"pagePath": "pages/car/car",
+				"iconPath": "static/tabBar/car.png",
+				"selectedIconPath": "static/tabBar/car-hover.png",
+				"text": "购物车"
+			}, {
+				"pagePath": "pages/my/my",
+				"iconPath": "static/tabBar/mine.png",
+				"selectedIconPath": "static/tabBar/mine-hover.png",
+				"text": "我的"
+			}
+			// , {
+			// 	"pagePath": "pages/login/login",
+			// 	"iconPath": "static/tabBar/mine.png",
+			// 	"selectedIconPath": "static/tabBar/mine-hover.png",
+			// 	"text": "登录"
+			// }
+		]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

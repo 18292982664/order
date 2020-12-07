@@ -1,7 +1,7 @@
 {
 	"easycom": {
-			"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
-		},
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"name": "order",
 	"version": "1.0.0",
 	"description": "",
@@ -21,6 +21,7 @@
 	},
 	"homepage": "https://github.com/18292982664/order#readme",
 	"dependencies": {
+		"uni-request": "^1.0.2",
 		"uview-ui": "^1.8.2"
 	},
 	"devDependencies": {
