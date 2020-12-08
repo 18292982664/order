@@ -1,33 +1,50 @@
 <template>
 	<view class="order">
+		<view class="loading-center">
+			<view class="Loading" v-show="isLoading">
+				<u-loading mode="flower"  size="120"></u-loading>
+			</view>
+			<view  v-if="listGoods.length == 0">
+				<u-empty text="所谓伊人，在水一方" mode="data"></u-empty>
+			</view>
+		</view>
+
 		<u-tabs :list="list" :is-scroll="false" :current="current" @change="change"></u-tabs>
-		<view class="center-box">
-			<view class="center-item" v-for="(item, index) in listGoods" :key="index" @click="goodsDetails(index)">
-				<view class="center-item-item">
-					<view class="item table-number">桌号：{{ item.place }}</view>
-					<view class="flex-both-sides item order-time">
-						<view class="main order">
-							订单号：
-							<span>{{ item.cartNo }}</span>
+		<view v-if="listGoods.length !== 0">
+			<view class="center-box">
+				<view class="center-item" v-for="(item, index) in listGoods" :key="index" @click="goodsDetails(index)">
+					<view class="center-item-item">
+						<view class="item table-number">桌号：{{ item.place }}</view>
+						<view class="flex-both-sides item order-time">
+							<view class="main order">
+								订单号：
+								<span>{{ item.cartNo }}</span>
+							</view>
+							<view class="main num">
+								数量：
+								<span>{{ item.goodsCount }}</span>
+							</view>
 						</view>
-						<view class="main num">
-							数量：
-							<span>{{ item.goodsCount }}</span>
+						<view class="flex-both-sides item amount-of-money">
+							<view class="main time">
+								下单时间：
+								<span>{{ item.createTime }}</span>
+							</view>
+							<view class="main price">
+								金额：
+								<span>{{ item.totalPrice }}</span>
+							</view>
 						</view>
-					</view>
-					<view class="flex-both-sides item amount-of-money">
-						<view class="main time">
-							下单时间：
-							<span>{{ item.updateTime }}</span>
+						<view class="flex-both-sides item amount-of-money" v-if="current  == 2">
+							<view class="main time">
+								结账时间：
+								<span>{{ item.updateTime }}</span>
+							</view>
 						</view>
-						<view class="main price">
-							金额：
-							<span>{{ item.totalPrice }}</span>
+						<view class="flex-center item btn-box" v-if="item.state != 2">
+							<view class="add" @click.stop="add(index)">加菜</view>
+							<view class="check-out" @click.stop="checkOut(index)">结账</view>
 						</view>
-					</view>
-					<view class="flex-center item btn-box" v-if="item.state != 2">
-						<view class="add" @click.stop="add(index)">加菜</view>
-						<view class="check-out" @click.stop="checkOut(index)">结账</view>
 					</view>
 				</view>
 			</view>
@@ -60,159 +77,162 @@
 </template>
 
 <script>
-import qrCode from '../../utils/qrcode.js';
-// import QRCode from 'qrcodejs2'
-export default {
-	data() {
-		return {
-			current: 0,
-			popupShow: false,
-			realPrice: null,
-			Timer: null,
-			state: 0,
-			list: [
-				{
-					name: '未结账'
-				},
-				{
-					name: '待支付'
-				},
-				{
-					name: '已完成'
-				}
-			],
-			listGoods: [],
-			paymentDetails: []
-		};
-	},
-	onLoad() {
-		this.queryProductChart();
-	},
-	computed: {},
-	methods: {
-		change(index) {
-			this.current = index;
+	import qrCode from '../../utils/qrcode.js';
+	// import QRCode from 'qrcodejs2'
+	export default {
+		data() {
+			return {
+				current: 0,
+				popupShow: false,
+				realPrice: null,
+				Timer: null,
+				state: 0,
+				isLoading: true,
+				list: [{
+						name: '未结账'
+					},
+					{
+						name: '待支付'
+					},
+					{
+						name: '已完成'
+					}
+				],
+				listGoods: [],
+				paymentDetails: []
+			};
+		},
+		onLoad() {
 			this.queryProductChart();
 		},
-		// 订单列表
-		queryProductChart() {
-			let params = {
-				state: this.current,
-				pageSize: 100
-			};
-			this.$axios.queryProductChart(params).then(res => {
-				console.log('订单列表', res);
-				this.listGoods = res.data.records;
-			});
-		},
-		//详情
-		goodsDetails(index) {
-			console.log(index);
-		},
-		add() {
-			console.log('加菜');
-		},
-		//结账
-		checkOut(index) {
-			let that = this;
-			this.popupShow = true;
-			let goodCartNo = this.listGoods[index];
-			let params = {
-				cartNo: goodCartNo.cartNo,
-				realPrice: goodCartNo.realPrice
-			};
-			console.log('结账');
-			this.$axios.unifiedorder(params).then(res => {
-				this.paymentDetails = res.data.products;
-				this.realPrice = res.data.realPrice;
-				let codeUrl = res.data.qrUrl;
-				new qrCode('couponQrcode', {
-					text: codeUrl,
-					width: 150,
-					height: 150,
-					colorDark: '#333333',
-					colorLight: '#FFFFFF',
-					correctLevel: qrCode.CorrectLevel.H
+		computed: {},
+		methods: {
+			change(index) {
+				this.current = index;
+				this.queryProductChart();
+			},
+			// 订单列表
+			queryProductChart() {
+				let params = {
+					state: this.current,
+					pageSize: 100
+				};
+				this.$axios.queryProductChart(params).then(res => {
+					let listGoods = res.data.records;
+					res.data.records.map((v) => {
+						v.createTime = this.$formatDate.formatDate(new Date(v.createTime));
+						v.updateTime = this.$formatDate.formatDate(new Date(v.updateTime));
+					})
+					this.listGoods = listGoods;
+					this.isLoading = false;
+
 				});
-				clearInterval(this.Timer);
-				this.Timer = setInterval(() => {
-					this.getChartState(index);
-				}, 1000);
-			});
-		},
-		//支付状态
-		getChartState(index) {
-			let that = this;
-			let cartNo = this.listGoods[index].cartNo;
-			let params = {
-				cartNo
-			};
-			console.log('订单状态');
-			that.$axios.getChartState(params).then(res => {
-				if (res.data.state == 2) {
+			},
+			//详情
+			goodsDetails(index) {
+				console.log(index);
+			},
+			add() {
+				console.log('加菜');
+			},
+			//结账
+			checkOut(index) {
+				let that = this;
+				this.popupShow = true;
+				let goodCartNo = this.listGoods[index];
+				let params = {
+					cartNo: goodCartNo.cartNo,
+					realPrice: goodCartNo.realPrice
+				};
+				this.$axios.unifiedorder(params).then(res => {
+					this.paymentDetails = res.data.products;
+					this.realPrice = res.data.realPrice;
+					let codeUrl = res.data.qrUrl;
+					new qrCode('couponQrcode', {
+						text: codeUrl,
+						width: 150,
+						height: 150,
+						colorDark: '#333333',
+						colorLight: '#FFFFFF',
+						correctLevel: qrCode.CorrectLevel.H
+					});
 					clearInterval(this.Timer);
+					this.Timer = setInterval(() => {
+						this.getChartState(index);
+					}, 1000);
+				});
+			},
+			//支付状态
+			getChartState(index) {
+				let that = this;
+				let cartNo = this.listGoods[index].cartNo;
+				let params = {
+					cartNo
+				};
+				that.$axios.getChartState(params).then(res => {
+					if (res.data.state == 2) {
+						clearInterval(this.Timer);
+						this.popupShow = false;
+						this.change(2);
+					}
+				});
+			},
+			//关闭定时器
+			closeHidden() {
+				clearInterval(this.Timer);
+				if (this.state == 1) {
+					this.change(1);
 					this.popupShow = false;
-					this.change(2);
 				}
-				console.log('状态', res);
-			});
-		},
-		//关闭定时器
-		closeHidden() {
-			clearInterval(this.Timer);
-			if (this.state == 1) {
-				this.change(1);
-				this.popupShow = false;
 			}
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss">
-.order {
-	.center-box {
-		.center-item {
-			padding: 10rpx 16rpx;
-		}
-
-		.center-item-item {
-			background: #f5f5f5;
-			padding: 20rpx 30rpx;
-			border-radius: 20rpx;
-
-			.main {
-				color: $uni-text-color-inverse;
-
-				span {
-					color: $uni-text-color;
-				}
+	.order {
+		.center-box {
+			.center-item {
+				padding: 10rpx 16rpx;
 			}
 
-			.btn-box {
-				.add {
-					background: $uni-bg-color-add;
-					color: $uni-text-color-white;
-					font-size: $uni-font-size-lg;
-					padding: 10rpx 30rpx;
-					border-radius: 26rpx;
-					margin-right: 15rpx;
+			.center-item-item {
+				background: #f5f5f5;
+				padding: 20rpx 30rpx;
+				border-radius: 20rpx;
+
+				.main {
+					color: $uni-text-color-inverse;
+
+					span {
+						color: $uni-text-color;
+					}
 				}
 
-				.check-out {
-					background-color: $uni-bg-color-mask;
-					color: $uni-text-color-white;
-					font-size: $uni-font-size-lg;
-					padding: 10rpx 30rpx;
-					border-radius: 26rpx;
-					margin-left: 15rpx;
-				}
-			}
+				.btn-box {
+					.add {
+						background: $uni-bg-color-add;
+						color: $uni-text-color-white;
+						font-size: $uni-font-size-lg;
+						padding: 10rpx 30rpx;
+						border-radius: 26rpx;
+						margin-right: 15rpx;
+					}
 
-			.item {
-				padding-top: 16rpx;
+					.check-out {
+						background-color: $uni-bg-color-mask;
+						color: $uni-text-color-white;
+						font-size: $uni-font-size-lg;
+						padding: 10rpx 30rpx;
+						border-radius: 26rpx;
+						margin-left: 15rpx;
+					}
+				}
+
+				.item {
+					padding-top: 16rpx;
+				}
 			}
 		}
 	}
-}
 </style>

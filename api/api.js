@@ -25,15 +25,18 @@ module.exports = {
 		return request('/mechant/putProductToChar', "POST", p)
 	},
 	//订单列表
-	queryProductChart(p){
-		return request("/mechant/queryProductChart","GET",p)
+	queryProductChart(p) {
+		return request("/mechant/queryProductChart", "GET", p)
 	},
 	//结账
-	unifiedorder(p){
-		return request("/pay/unifiedorder","GET",p)
+	unifiedorder(p) {
+		return request("/pay/unifiedorder", "GET", p)
 	},
 	//查询订单支付状态
-	getChartState(p){
-		return request("/mechant/getChartState","GET",p)
+	getChartState(p) {
+		return request("/mechant/getChartState", "GET", p)
+	},
+	modifyPassword(p) {
+		return request("/admin/modifyPassword", "POST", p);
 	}
 }

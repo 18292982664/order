@@ -1,10 +1,14 @@
 <template>
 	<view class="content">
-		{{goodsCar}}
 		<view class="loading-center">
-			<u-loading mode="flower" :show="isLoading" size="100"></u-loading>
+			<view class="Loading" v-show="isLoading">
+				<u-loading mode="flower"  size="120"></u-loading>
+			</view>
+			<view  v-if="goodsList.length == 0">
+				<u-empty text="所谓伊人，在水一方" mode="data"></u-empty>
+			</view>
 		</view>
-		<template v-show="centerShow">
+		<template v-if="goodsList.length !== 0">
 			<u-tabs :list="list" :is-scroll="true" :current="current" @change="change"></u-tabs>
 			<view class="text-area">
 				<view class="item-commodity" v-for="(item, index) in goodsList" :key="index">
@@ -76,7 +80,7 @@
 					setTimeout(() => {
 						this.centerShow = true;
 						this.isLoading = false;
-					}, 1000);
+					}, 500);
 				});
 			},
 			addItem(index) {
