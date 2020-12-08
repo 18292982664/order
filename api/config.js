@@ -11,8 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const request = (url = '', method = 'GET', data = {}) => {
 	const header = {}
-	const token = uni.getStorageSync('token')
-	console.log(token, 'token2')
+	const token = uni.getStorageSync('token');
 	if (token == 'undefined' || token == '') {
 		uni.redirectTo({
 			url: '/pages/login/login'
@@ -20,7 +19,7 @@ const request = (url = '', method = 'GET', data = {}) => {
 	} else {
 		header['token'] = token
 	}
-	header['content-type'] = "application/x-www-form-urlencoded";
+	header['content-type'] = "application/json";
 	return new Promise((resolve, reject) => {
 		uni.request({
 			method: method,
@@ -29,17 +28,22 @@ const request = (url = '', method = 'GET', data = {}) => {
 			header: header
 		}).then((response) => {
 			let [error, res] = response;
-			console.log(2, res)
 			// 登录过期
 			switch (res.statusCode) {
+				case 200:
+					resolve(res.data);
+					break;
+				case 500:
+					uni.redirectTo({
+						url: '/pages/login/login'
+					});
+					break;
 				case 401:
 					uni.redirectTo({
 						url: '/pages/login/login'
 					});
-			}
-			if (res.statusCode == 200) {
-				resolve(res.data);
-			}
+					break;
+			};
 
 		}).catch((error) => {
 			console.log(1, error)
